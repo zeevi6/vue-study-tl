@@ -1,0 +1,77 @@
+
+<html>
+    <head>
+        <title>Vue Sample</title>
+    </head>
+    <body>
+        <div id="app">
+            {{ toUpperCase(message) }}
+            <br>
+            <p v-bind:id="idA">bind id</p>
+            <p v-if="visible">bind class</p>
+            <p v-bind:style="styleA">bind style</p>
+            <ul>
+                <li v-for="num in arr" v-on:click="popAlert">{{num}}</li>
+            </ul>
+            <hr>
+            <br><input type="text" v-model="modelText"/>
+            <ul>
+                <li><span>methods? {{mockComputed()}}</span></li>
+                <li><span>computed? {{computedText}}</span></li>
+            </ul>
+            <hong-component></hong-component>
+            <comp-second></comp-second>
+        </div>
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+            var cmp1 = {
+                template: '<div>{{message}}</div>',
+                data: function () {
+                    return {
+                        message: 1124
+                    }
+                }
+            };
+            var cmp2 = {
+                template: '<div>second component : {{message}}</div>',
+                data: function () {
+                    return {
+                        message: cmp1.data.message
+                    }
+                }
+            };
+            var app = new Vue({
+                el: '#app',
+                components: {
+                    'hong-component' : cmp1,
+                    'comp-second' : cmp2
+                },
+                data: {
+                    idA: 10,
+                    visible: false,
+                    styleA: 'color: blue',
+                    message: 'Hello Vue.js!',
+                    arr: [2,5,3],
+                    modelText: "waer12345"
+                },
+                methods: {
+                    toUpperCase: function (str) {return str.toUpperCase();},
+                    popAlert: function (e) {alert(e.target.innerHTML);},
+                    mockComputed: function () {
+                        return this.modelText.split('').reverse().join('');
+                    }
+                },
+                computed: {
+                    computedText: function () {
+                        return this.modelText.split('').reverse().join('');
+                    }
+                },
+                watch: {
+                    modelText: function () {
+                        console.log("[watch] "+ this.modelText);
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
