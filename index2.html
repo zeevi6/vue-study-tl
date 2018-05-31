@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>Vue Sample</title>
+</head>
+
+<body>
+    <div id="app">
+        클릭 횟수 : {{ counter }}
+        <br>
+        <child-component v-on:plus="incrementCounter"></child-component>
+        <child-second v-bind:number="counter"></child-second>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        Vue.component('child-component', {
+            template: `<button v-on:click="plus">증가</button>`,
+            methods: {
+                plus: function () {
+                    this.$emit('plus');
+                }
+            }
+        });
+
+        var cmp2 = {
+            props: ['number'],
+            template: '<div>this is second child comp - {{number}}</div>'
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: '하이',
+                counter: 0
+            },
+            methods: {
+                incrementCounter: function () {
+                    this.counter = this.counter + 1;
+                }
+            },
+            components: {
+                'child-second': cmp2
+            }
+        });
+    </script>
+</body>
+
+</html>
